@@ -23,3 +23,9 @@ void quick_sort(int* arr,int left,int right){
     quick_sort(arr,left,cur_index);
     quick_sort(arr,cur_index+1,right);
 }
+
+int main(void){
+    int nums[] = {5,2,3,3,1,22,6,12};
+    quick_sort(nums,0,8);
+    return 0;
+}
