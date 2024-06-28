@@ -4,8 +4,10 @@
 int main() {
     char NumArr[50000] = {};
     //NULL終端？ '\0' で単語を区切って、文字列に保存、頭の配列文字をNumArrに保存
-    int i = 0,j = 0;
+    //NULL:ポインタ '\0':終端文字
+    int i = 1,j = 0;
     char word[150000] = {};
+    word[0] = -1;
     while(1){
         scanf("%c",&word[i]);
         //単語の初め
@@ -28,23 +30,35 @@ int main() {
             break;
         }
     }
+    // i = 0;
+    // while(1){
+    //     printf("%d ",NumArr[i]);
+    //     j = NumArr[i];
+    //     while(1){
+    //         printf("%c",word[j]);
+    //         ++j;
+    //         if(word[j] == '\0'){
+    //             break;
+    //         }
+    //     }
+    //     ++i;
+    //     printf("\n");
+    //     if(NumArr[i] == '\0'){
+    //         break;
+    //     }
+    // }
+    //比較and並び替え
+    
+
     i = 0;
     while(1){
-        printf("%d ",NumArr[i]);
-        j = NumArr[i];
-        while(1){
-            printf("%c",word[j]);
-            ++j;
-            if(word[j] == '\0'){
-                break;
-            }
-        }
-        ++i;
-        printf("\n");
+        //数値の0が、文字に変換すると'\000'で、終端文字ではなく数値に反応している
         if(NumArr[i] == '\0'){
             break;
         }
+        printf("%s\n",&word[NumArr[i]]);
+        ++i;
     }
-    printf("%s",&word[5]);
+
     return 0;
 }
