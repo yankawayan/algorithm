@@ -2,36 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-void swap(char* x,char* y){
-    char buff = *x;
-    *x = *y;
-    *y = buff;
-    return;
-}
-void word_quick_sort(char* word,int* NumArr,int left,int right){
-    if(left+1>=right){
-        return;
-    }
-    int pivotNum = NumArr[right-1];
-    int cur_index = left;
-    for(int i=left;i<right-1;++i){
-        if(strcmp(&word[NumArr[i]],&word[pivotNum]) < 0){
-            swap(&NumArr[cur_index],&NumArr[i]);
-            cur_index++;
+int str_comp(char* s1,char* s2){
+    int i = 0;
+    while(1){
+        if(s1[i]=='\0'){
+            //一致した場合
+            if(s2[i]=='\0'){
+                return 0;
+            }
+            return -1;
         }
+        else if(s2[i]=='\0'){
+            return 1;
+        }
+        else if(s1[i]-s2[i]<0){
+            return -1;
+        }
+        else if(s1[i]-s2[i]>0){
+            return 1;
+        }
+        ++i;
     }
-    swap(&NumArr[cur_index],&NumArr[right-1]);
-    word_quick_sort(word,NumArr,left,cur_index);
-    word_quick_sort(word,NumArr,cur_index+1,right);
 }
 
 int main(void){
     // strcmp => "AA" < "AaA" => 数字が少ないほうが、辞書順手前
-    char word[] = {-1,'A','A','\0','A','a','A','\0','K','a','k','O','\0'};
-    int NumArr[] = {9,4,1};
+    char word[] = {-1,'A','A','\0','A','C','\0','A','a','C','\0'};
+    // 1 4 7
+    printf("%d %d %d %d",'C','c','A','a');
 
-    int len = sizeof NumArr / sizeof NumArr[0];
-    word_quick_sort(word,NumArr,0,len);
 
     return 0;
 }
