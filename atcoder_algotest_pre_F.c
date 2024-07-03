@@ -2,35 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int str_comp_notUpLow(char* s1,char* s2){
-    int i = 0;
-    while(1){
-        char a = s1[i], b = s2[i];
-        if('A' <= a && 'Z' >= a){
-            a += 32;
-        }
-        if('A' <= b && 'Z' >= b){
-            b += 32;
-        }
-        if(a=='\0'){
-            //一致した場合
-            if(b=='\0'){
-                return 0;
-            }
-            return -1;
-        }
-        else if(b=='\0'){
-            return 1;
-        }
-        else if(a-b<0){
-            return -1;
-        }
-        else if(a-b>0){
-            return 1;
-        }
-        ++i;
-    }
-}
+#define STR_MAX 150001
 
 void swap(int* x,int* y){
     int buff = *x;
@@ -45,7 +17,7 @@ void word_quick_sort(char* word,int* NumArr,int left,int right){
     int pivotNum = NumArr[right-1];
     int cur_index = left;
     for(int i=left;i<right-1;++i){
-        if(str_comp_notUpLow(&word[NumArr[i]],&word[pivotNum]) < 0){
+        if(strcmp(&word[NumArr[i]],&word[pivotNum]) < 0){
             swap(&NumArr[cur_index],&NumArr[i]);
             cur_index++;
         }
@@ -56,47 +28,51 @@ void word_quick_sort(char* word,int* NumArr,int left,int right){
 }
 
 int main() {
-    int NumArr[50000] = {};
-    int LenNumArr = 0;
-    //NULL終端？ '\0' で単語を区切って、文字列に保存、頭の配列文字をNumArrに保存
-    //NULL:ポインタ '\0':終端文字
-    int i = 1,j = 0;
-    char word[150001] = {};
+    int i = 1,j = 0,NumArr[50000] = {};
+    char input,word[STR_MAX] = {};
     word[0] = -1;
     while(1){
-        scanf("%c",&word[i]);
-        //単語の初め
-        if(word[i] >= 'A' && word[i] <= 'Z'){
-            //単語初めの位置を保存
-            NumArr[j] = i;
-            ++j;
-            ++LenNumArr;
-            ++i;
-            scanf("%c",&word[i]);
-            //単語の終わり
-            while(!(word[i] >= 'A' && word[i] <= 'Z')){
-                ++i;
-                scanf("%c",&word[i]);
-            }
-            ++i;
-            word[i] = '\0';
-            ++i;
-        }
-        else if(word[i] == '\n'){
+        scanf("%c",&input);
+        if(input == '\n'){
             break;
         }
+        word[i] = input+32;
+        NumArr[j] = i;
+        ++j;
+        ++i;
+        scanf("%c",&input);
+        //単語の終わり
+        while(input >= 'a' && input <= 'z'){
+            word[i] = input;
+            ++i;
+            scanf("%c",&input);
+        }
+        word[i] = input+32;
+        ++i;
+        word[i] = '\0';
+        ++i;
     }
-
-    //比較and並び替え//長さは単語分割時に同時カウント
-    word_quick_sort(word,NumArr,0,LenNumArr);
-
+    //並び替え
+    word_quick_sort(word,NumArr,0,j);
     i = 0;
+    char* lett;
     while(1){
-        // 配列の最初を―1で固定//数値の0が、文字に変換すると'\000'で、終端文字ではなく数値に反応している
         if(NumArr[i] == '\0'){
             break;
         }
-        printf("%s",&word[NumArr[i]]);
+        j = 0;
+        lett = &word[NumArr[i]];
+        *lett-=32;
+        printf("%c",*lett);
+        while(1){
+            lett++;
+            if(*(lett+1) == '\0'){
+                break;
+            }
+            printf("%c",*lett);
+        }
+        *lett-=32;
+        printf("%c",*lett);
         ++i;
     }
 
